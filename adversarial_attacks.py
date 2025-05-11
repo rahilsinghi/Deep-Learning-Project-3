@@ -35,18 +35,30 @@ plain_transforms = transforms.Compose([
     transforms.Normalize(mean=MEAN_NORMS, std=STD_NORMS)
 ])
 
-def load_model():
-    """Load and prepare the ResNet-34 model"""
+def load_model() -> nn.Module:
+    """
+    Load and prepare the ResNet-34 model.
+    
+    Returns:
+        nn.Module: Pre-trained ResNet-34 model loaded with ImageNet weights.
+    """
     model = torchvision.models.resnet34(weights='IMAGENET1K_V1')
     model = model.to(device)
     model.eval()
     return model
 
-def load_dataset(dataset_path):
-    """Load the test dataset"""
+def load_dataset(dataset_path: str) -> torchvision.datasets.ImageFolder:
+    """
+    Load the test dataset from the specified path.
+    
+    Args:
+        dataset_path (str): Path to the dataset directory.
+        
+    Returns:
+        torchvision.datasets.ImageFolder: Loaded dataset.
+    """
     dataset = torchvision.datasets.ImageFolder(root=dataset_path, transform=plain_transforms)
     
-    # Debug: Print dataset information
     print("\nDataset information:")
     print(f"Number of classes: {len(dataset.classes)}")
     print(f"Class names: {dataset.classes}")
@@ -54,81 +66,63 @@ def load_dataset(dataset_path):
     
     return dataset
 
-def load_imagenet_labels():
-    """Load ImageNet class labels and create mappings"""
+def load_imagenet_labels() -> tuple[dict, dict]:
+    """
+    Load ImageNet class labels and create mappings.
+    
+    Returns:
+        tuple[dict, dict]: A tuple containing:
+            - label_map: Maps ImageNet index to label name
+            - class_map: Maps dataset index to ImageNet index
+    """
     with open('TestDataSet/labels_list.json', 'r') as f:
         labels = json.load(f)
     
-    # Create mappings
-    label_map = {}  # Maps ImageNet index to label name
-    class_map = {}  # Maps dataset index to ImageNet index
+    label_map = {}
+    class_map = {}
     
-    # First, create mapping of ImageNet indices to labels
     for label in labels:
         idx, name = label.split(': ')
         idx = int(idx)
         label_map[idx] = name
     
-    # Create direct mapping from dataset indices to ImageNet indices
-    # Since our dataset is ordered from 0-99 and labels are from 401-500,
-    # we can create a direct mapping
     for i in range(100):
         class_map[i] = i + 401
     
-    # Print debug information
     print("\nMapping Information:")
     print(f"Number of ImageNet labels: {len(label_map)}")
     print(f"Number of class mappings: {len(class_map)}")
-    print("\nFirst few class mappings:")
-    for i, (k, v) in enumerate(sorted(class_map.items())):
-        if i < 5:
-            print(f"Dataset idx {k} -> ImageNet idx {v} ({label_map[v]})")
     
     return label_map, class_map
 
-def evaluate_model(model, dataloader, label_map, class_map):
-    """Evaluate model performance and return top-1 and top-5 accuracy"""
+def evaluate_model(
+    model: nn.Module,
+    dataloader: torch.utils.data.DataLoader,
+    label_map: dict,
+    class_map: dict
+) -> tuple[float, float]:
+    """
+    Evaluate model performance and return top-1 and top-5 accuracy.
+    
+    Args:
+        model: Model to evaluate
+        dataloader: DataLoader containing evaluation data
+        label_map: Mapping of indices to class names
+        class_map: Mapping of dataset indices to ImageNet indices
+        
+    Returns:
+        tuple[float, float]: Top-1 and Top-5 accuracy percentages
+    """
     correct_1 = 0
     correct_5 = 0
     total = 0
     
-    # Debug: Print class mapping information
-    print("\nClass mapping information:")
-    print(f"Number of classes in class_map: {len(class_map)}")
-    print("First few mappings:")
-    for i, (k, v) in enumerate(sorted(class_map.items())):
-        if i < 5:
-            print(f"Dataset index {k} -> ImageNet index {v}")
-    
     with torch.no_grad():
-        for batch_idx, (images, labels) in enumerate(tqdm(dataloader)):
+        for images, labels in tqdm(dataloader):
             images = images.to(device)
             outputs = model(images)
             
-            # Debug: Print label information for first batch
-            if batch_idx == 0:
-                print("\nFirst batch label information:")
-                print(f"Raw labels: {labels.tolist()}")
-                print(f"Unique labels in batch: {torch.unique(labels).tolist()}")
-            
-            # Map the dataset labels to ImageNet class indices
-            try:
-                imagenet_labels = torch.tensor([class_map[label.item()] for label in labels], device=device)
-            except KeyError as e:
-                print(f"\nError: Label {e} not found in class_map")
-                print(f"Available labels in class_map: {sorted(class_map.keys())}")
-                raise
-            
-            # Print debug information for first batch
-            if batch_idx == 0:
-                print("\nFirst batch predictions vs true labels:")
-                _, predicted = outputs.max(1)
-                for i in range(min(5, len(predicted))):
-                    pred_idx = predicted[i].item()
-                    true_idx = imagenet_labels[i].item()
-                    pred_label = label_map.get(pred_idx, f"Unknown class {pred_idx}")
-                    true_label = label_map.get(true_idx, f"Unknown class {true_idx}")
-                    print(f"Predicted: {pred_idx} ({pred_label}), True: {true_idx} ({true_label})")
+            imagenet_labels = torch.tensor([class_map[label.item()] for label in labels], device=device)
             
             # Top-1 accuracy
             _, predicted = outputs.max(1)
