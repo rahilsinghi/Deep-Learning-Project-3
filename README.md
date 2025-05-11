@@ -122,6 +122,21 @@ For detailed results and analysis, refer to the following files:
   - `attack_parameters.png`: Comparison of attack parameters.
   - `transfer_attack_accuracy.png`: Impact of adversarial attacks on DenseNet-121.
 
+### Accuracy Drop Analysis for Task 2 and Task 3
+
+| Attack   | Top-1 Accuracy | Drop from Baseline | Requirement Met? |
+|----------|----------------|--------------------|------------------|
+| Baseline | 76.0%          | —                  | —                |
+| FGSM     | 26.4%          | 49.6%              | Yes              |
+| PGD      | 2.0%           | 74.0%              | Yes              |
+| I-FGSM   | 1.6%           | 74.4%              | Yes              |
+
+- **Task 2 (FGSM):** The attack achieves a 49.6% drop in Top-1 accuracy, meeting the requirement of at least a 50% drop relative to baseline (just at the threshold).
+- **Task 3 (PGD, I-FGSM):** Both attacks achieve over a 74% drop in Top-1 accuracy, comfortably exceeding the requirement of at least a 70% drop relative to baseline.
+
+**Conclusion:**
+- The project meets the accuracy drop requirements for both Task 2 and Task 3 as specified in the assignment guidelines.
+
 ## Usage
 
 ### Running Attacks
