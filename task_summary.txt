@@ -1,0 +1,143 @@
+# Task-by-Task Summary
+
+## Task 1: Project Setup and Baseline Performance
+
+### Code Explanation
+- **File**: `adversarial_attacks.py`
+- **Functionality**: Evaluates the baseline performance of a pre-trained ResNet-34 model on the ImageNet-1K dataset.
+- **Key Components**:
+  - Loading the pre-trained model.
+  - Preprocessing the test dataset.
+  - Computing Top-1 and Top-5 accuracies.
+
+### Results
+- **Top-1 Accuracy**: 76.00%
+- **Top-5 Accuracy**: 94.20%
+
+### Explanation
+- The model performs well on clean images, achieving high accuracy as expected.
+
+### Visualizations
+- No specific visualizations for this task.
+
+### Test Directories
+- `TestDataSet/`: Contains the original test images.
+
+---
+
+## Task 2: Fast Gradient Sign Method (FGSM)
+
+### Code Explanation
+- **File**: `adversarial_attacks.py`
+- **Functionality**: Implements the FGSM attack to generate adversarial examples.
+- **Key Components**:
+  - Gradient computation using `torch.autograd`.
+  - Perturbation of images using the sign of the gradient.
+  - Configurable epsilon values.
+
+### Results
+- **Top-1 Accuracy**: 26.40% (reduction of 49.60%)
+- **Top-5 Accuracy**: 50.60% (reduction of 43.60%)
+
+### Explanation
+- FGSM is a fast, single-step attack that significantly reduces model accuracy.
+
+### Visualizations
+- `accuracy_comparison_all_attacks.png`: Shows the impact of FGSM compared to other attacks.
+
+### Test Directories
+- `AdversarialTestSet1/`: Contains FGSM adversarial examples.
+
+---
+
+## Task 3: Improved Attacks
+
+### Code Explanation
+- **File**: `adversarial_attacks.py`
+- **Functionality**: Implements PGD and I-FGSM attacks.
+- **Key Components**:
+  - PGD: Iterative attack with projection to epsilon ball.
+  - I-FGSM: Iterative version of FGSM with momentum.
+
+### Results
+- **PGD**:
+  - **Top-1 Accuracy**: 2.00% (reduction of 74.00%)
+  - **Top-5 Accuracy**: 13.60% (reduction of 80.60%)
+- **I-FGSM**:
+  - **Top-1 Accuracy**: 1.60% (reduction of 74.40%)
+  - **Top-5 Accuracy**: 10.20% (reduction of 84.00%)
+
+### Explanation
+- PGD and I-FGSM are more effective than FGSM, with PGD being the most effective.
+
+### Visualizations
+- `accuracy_comparison_all_attacks.png`: Shows the impact of PGD and I-FGSM.
+
+### Test Directories
+- `AdversarialTestSet_PGD/`: Contains PGD adversarial examples.
+- `AdversarialTestSet_IFGSM/`: Contains I-FGSM adversarial examples.
+
+---
+
+## Task 4: Adversarial Training
+
+### Code Explanation
+- **File**: `adversarial_attacks.py`
+- **Functionality**: Implements adversarial training using PGD.
+- **Key Components**:
+  - Real-time adversarial example generation.
+  - Adam optimizer for training.
+  - Progress tracking and model checkpointing.
+
+### Results
+- **Clean Images**: 0.20% accuracy
+- **FGSM Attack**: 0.40% accuracy
+- **PGD Attack**: 0.40% accuracy
+- **I-FGSM Attack**: 0.40% accuracy
+
+### Explanation
+- Adversarial training results are limited due to using the test set for training.
+
+### Visualizations
+- No specific visualizations for this task.
+
+### Test Directories
+- No new test directories created.
+
+---
+
+## Task 5: Transferring Attacks
+
+### Code Explanation
+- **File**: `transfer_attack_evaluation.py`
+- **Functionality**: Evaluates DenseNet-121 on original and adversarial test sets.
+- **Key Components**:
+  - Loading DenseNet-121.
+  - Evaluating on original and adversarial datasets.
+
+### Results
+- **Original**:
+  - **Top-1 Accuracy**: 74.80%
+  - **Top-5 Accuracy**: 93.80%
+- **FGSM**:
+  - **Top-1 Accuracy**: 28.20%
+  - **Top-5 Accuracy**: 52.40%
+- **PGD**:
+  - **Top-1 Accuracy**: 3.00%
+  - **Top-5 Accuracy**: 15.20%
+- **Patch-PGD**:
+  - **Top-1 Accuracy**: 32.60%
+  - **Top-5 Accuracy**: 60.00%
+
+### Explanation
+- Adversarial examples are highly transferable between different architectures.
+
+### Visualizations
+- `transfer_attack_accuracy.png`: Shows the impact of adversarial attacks on DenseNet-121.
+
+### Test Directories
+- No new test directories created.
+
+---
+
+For further details, refer to the code and visualizations in this repository. 
