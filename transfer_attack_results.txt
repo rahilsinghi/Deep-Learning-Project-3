@@ -1,0 +1,42 @@
+DenseNet-121 Transfer Attack Evaluation
+====================================
+
+Results for classification accuracy of DenseNet-121 on the original and adversarial test sets:
+
+| Dataset      | Top-1 Accuracy | Top-5 Accuracy |
+|--------------|:--------------:|:--------------:|
+| Original     | 74.80%         | 93.80%         |
+| FGSM         | 28.20%         | 52.40%         |
+| PGD          | 3.00%          | 15.20%         |
+| Patch-PGD    | 32.60%         | 60.00%         |
+
+
+---
+
+## Discussion & Analysis
+
+### 1. **Transferability of Adversarial Attacks**
+- **FGSM and PGD attacks** generated on ResNet-34 significantly reduce DenseNet-121's accuracy, even though the adversarial examples were not crafted for this model. This demonstrates the high transferability of adversarial examples between different deep networks.
+- **PGD** remains the most effective, dropping Top-1 accuracy to just 3.00% and Top-5 to 15.20%.
+- **Patch-PGD** (localized patch attack) is less effective than full-image attacks but still reduces accuracy substantially, showing that even small, localized perturbations can transfer.
+
+### 2. **Trends Observed**
+- **Original images**: DenseNet-121 achieves high accuracy, as expected.
+- **All adversarial sets**: There is a dramatic drop in both Top-1 and Top-5 accuracy, with PGD being the most severe.
+- **Patch-based attacks**: While less effective than full-image attacks, they still cause a significant drop, especially in Top-5 accuracy.
+
+### 3. **Lessons Learned**
+- **Adversarial examples are highly transferable** between different architectures, even when the attack is not tailored to the target model.
+- **Localized attacks** (patch-based) are a real threat, as they can fool models even with limited perturbation area.
+
+### 4. **Mitigation Strategies**
+- **Adversarial training** with a variety of attacks (including patch-based and transferred attacks) can help improve robustness.
+- **Ensemble methods** and input preprocessing may reduce transferability, but are not foolproof.
+- **Detection mechanisms** for adversarial examples are an active area of research.
+
+---
+
+All results are visualized in `transfer_attack_accuracy.png`.
+
+For further details, see the code and visualizations in this repository.
+
