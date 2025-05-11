@@ -93,55 +93,23 @@ Implemented adversarial training to improve model robustness:
 
 ## Results and Analysis
 
-### 1. Baseline Performance
-- **Clean Images (No Attack)**
-  - Top-1 Accuracy: 76.00%
-  - Top-5 Accuracy: 94.20%
+For detailed results and analysis, refer to the following files:
 
-### 2. Full-Image Attacks
+- **Task-by-Task Summary**: `task_summary.txt` provides a comprehensive overview of each task, including code explanations, results, and visualizations.
+- **Visualizations**:
+  - `accuracy_comparison_all_attacks.png`: Comparison of all attacks.
+  - `attack_effectiveness.png`: Attack effectiveness (accuracy reduction).
+  - `patch_attack_examples.png`: Examples of patch attacks.
+  - `attack_parameters.png`: Comparison of attack parameters.
+  - `transfer_attack_accuracy.png`: Impact of adversarial attacks on DenseNet-121.
 
-#### FGSM Attack (ε = 0.02)
-- **Top-1 Accuracy**: 26.40% (reduction of 49.60%)
-- **Top-5 Accuracy**: 50.60% (reduction of 43.60%)
-- **Characteristics**:
-  - Fastest attack (single step)
-  - Moderate effectiveness
-  - Less computationally intensive
+## Suggestions for Further Reading
 
-#### PGD Attack (ε = 0.02, α = 0.002, steps = 10)
-- **Top-1 Accuracy**: 2.00% (reduction of 74.00%)
-- **Top-5 Accuracy**: 13.60% (reduction of 80.60%)
-- **Characteristics**:
-  - Most effective full-image attack
-  - Higher computational cost
-  - Iterative optimization
+- **Adversarial Attacks**: Explore more advanced attacks and defenses in the field of adversarial machine learning.
+- **Model Robustness**: Investigate techniques to improve model robustness against adversarial attacks.
+- **Transferability**: Study the transferability of adversarial examples across different models and architectures.
 
-#### I-FGSM Attack (ε = 0.02, α = 0.002, steps = 10, momentum = 0.9)
-- **Top-1 Accuracy**: 1.60% (reduction of 74.40%)
-- **Top-5 Accuracy**: 10.20% (reduction of 84.00%)
-- **Characteristics**:
-  - Similar effectiveness to PGD
-  - Better convergence with momentum
-  - Slightly faster than PGD
-
-### 3. Patch-Based Attack (Task 4)
-
-#### Patch-PGD Attack (32x32 patch, ε = 0.3, α = 0.03, steps = 20)
-- **Top-1 Accuracy**: 33.40% (reduction of 42.60%)
-- **Top-5 Accuracy**: 55.60% (reduction of 38.60%)
-- **Characteristics**:
-  - Targeted attack on a small patch
-  - Higher epsilon (0.3) to compensate for limited perturbation area
-  - More challenging than full-image attacks
-  - More realistic attack scenario
-
-### 4. Adversarial Training Results
-- **Clean Images**: 0.20% accuracy
-- **FGSM Attack**: 0.40% accuracy
-- **PGD Attack**: 0.40% accuracy
-- **I-FGSM Attack**: 0.40% accuracy
-
-**Note**: The adversarial training results are limited by using the test set for training, which is not a realistic scenario.
+For further details, see the code and visualizations in this repository.
 
 ## Limitations and Discussion
 
@@ -172,13 +140,6 @@ Implemented adversarial training to improve model robustness:
 3. Explore different patch sizes and locations
 4. Investigate transferability of attacks
 5. Implement defense mechanisms
-
-## Visualizations
-The following visualizations are available in the repository:
-- `accuracy_comparison_all_attacks.png`: Comparison of all attacks
-- `attack_effectiveness.png`: Attack effectiveness (accuracy reduction)
-- `patch_attack_examples.png`: Examples of patch attacks
-- `attack_parameters.png`: Comparison of attack parameters
 
 ## Usage
 
