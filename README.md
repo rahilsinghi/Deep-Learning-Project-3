@@ -1,6 +1,23 @@
 # Deep Learning Project 3: Adversarial Attacks on Image Classification
 
-This project implements and evaluates various adversarial attacks on a pre-trained ResNet-34 model using the ImageNet-1K dataset.
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Project Structure](#project-structure)
+- [Setup](#setup)
+- [Implementation Details](#implementation-details)
+  - [Task 1: Project Setup and Baseline Performance](#task-1-project-setup-and-baseline-performance)
+  - [Task 2: Fast Gradient Sign Method (FGSM)](#task-2-fast-gradient-sign-method-fgsm)
+  - [Task 3: Improved Attacks](#task-3-improved-attacks)
+  - [Task 4: Adversarial Training](#task-4-adversarial-training)
+  - [Task 5: Transferring Attacks](#task-5-transferring-attacks)
+- [Results and Analysis](#results-and-analysis)
+- [Usage](#usage)
+- [Dependencies](#dependencies)
+- [Limitations and Discussion](#limitations-and-discussion)
+- [Future Improvements](#future-improvements)
+
+## Project Overview
+This project implements and evaluates various adversarial attacks on pre-trained deep learning models using the ImageNet-1K dataset. The attacks include FGSM, PGD, I-FGSM, and patch-based attacks, with analysis of their effectiveness and transferability.
 
 ## Project Structure
 
@@ -91,6 +108,8 @@ Implemented adversarial training to improve model robustness:
      - PGD adversarial examples
      - I-FGSM adversarial examples
 
+### Task 5: Transferring Attacks
+
 ## Results and Analysis
 
 For detailed results and analysis, refer to the following files:
@@ -103,13 +122,47 @@ For detailed results and analysis, refer to the following files:
   - `attack_parameters.png`: Comparison of attack parameters.
   - `transfer_attack_accuracy.png`: Impact of adversarial attacks on DenseNet-121.
 
-## Suggestions for Further Reading
+## Usage
 
-- **Adversarial Attacks**: Explore more advanced attacks and defenses in the field of adversarial machine learning.
-- **Model Robustness**: Investigate techniques to improve model robustness against adversarial attacks.
-- **Transferability**: Study the transferability of adversarial examples across different models and architectures.
+### Running Attacks
+```python
+from adversarial_attacks import FGSMAttack, PGDAttack, IFGSMAttack
 
-For further details, see the code and visualizations in this repository.
+# FGSM Attack
+fgsm = FGSMAttack(model, epsilon=0.03)
+adversarial_images = fgsm.attack(images, labels)
+
+# PGD Attack
+pgd = PGDAttack(model, epsilon=0.03, steps=10, step_size=0.01)
+adversarial_images = pgd.attack(images, labels)
+
+# I-FGSM Attack
+ifgsm = IFGSMAttack(model, epsilon=0.03, steps=10, step_size=0.01)
+adversarial_images = ifgsm.attack(images, labels)
+```
+
+### Running Transfer Attack Evaluation
+```python
+python transfer_attack_evaluation.py
+```
+
+### Expected Outputs
+- Adversarial examples will be saved in their respective directories:
+  - `AdversarialTestSet1/` for FGSM
+  - `AdversarialTestSet_PGD/` for PGD
+  - `AdversarialTestSet_IFGSM/` for I-FGSM
+  - `AdversarialTestSet3/` for Patch-PGD
+- Results and visualizations will be generated in the root directory
+
+## Dependencies
+
+- PyTorch
+- torchvision
+- PIL
+- numpy
+- matplotlib
+
+See `requirements.txt` for specific versions.
 
 ## Limitations and Discussion
 
@@ -141,85 +194,12 @@ For further details, see the code and visualizations in this repository.
 4. Investigate transferability of attacks
 5. Implement defense mechanisms
 
-## Usage
+## Future Improvements
 
-To run the attacks:
-
-```python
-from adversarial_attacks import FGSMAttack, PGDAttack, IFGSMAttack
-
-# FGSM Attack
-fgsm = FGSMAttack(model, epsilon=0.03)
-adversarial_images = fgsm.attack(images, labels)
-
-# PGD Attack
-pgd = PGDAttack(model, epsilon=0.03, steps=10, step_size=0.01)
-adversarial_images = pgd.attack(images, labels)
-
-# I-FGSM Attack
-ifgsm = IFGSMAttack(model, epsilon=0.03, steps=10, step_size=0.01)
-adversarial_images = ifgsm.attack(images, labels)
-```
-
-To perform adversarial training:
-
-```python
-from adversarial_attacks import train_adversarial_model
-
-# Train model with adversarial training
-adv_model = train_adversarial_model(
-    model,
-    train_loader,
-    num_epochs=5,
-    learning_rate=0.0001,
-    epsilon=0.02,
-    alpha=0.002,
-    num_steps=10
-)
-```
-
-## Dependencies
-
-- PyTorch
-- torchvision
-- PIL
-- numpy
-- matplotlib
-
-See `requirements.txt` for specific versions.
-
-## Task 5: Transferring Attacks
-
-### Results and Analysis
-
-| Dataset      | Top-1 Accuracy | Top-5 Accuracy |
-|--------------|:--------------:|:--------------:|
-| Original     | 74.80%         | 93.80%         |
-| FGSM         | 28.20%         | 52.40%         |
-| PGD          | 3.00%          | 15.20%         |
-| Patch-PGD    | 32.60%         | 60.00%         |
-
-### Discussion & Analysis
-
-#### 1. **Transferability of Adversarial Attacks**
-- **FGSM and PGD attacks** generated on ResNet-34 significantly reduce DenseNet-121's accuracy, even though the adversarial examples were not crafted for this model. This demonstrates the high transferability of adversarial examples between different deep networks.
-- **PGD** remains the most effective, dropping Top-1 accuracy to just 3.00% and Top-5 to 15.20%.
-- **Patch-PGD** (localized patch attack) is less effective than full-image attacks but still reduces accuracy substantially, showing that even small, localized perturbations can transfer.
-
-#### 2. **Trends Observed**
-- **Original images**: DenseNet-121 achieves high accuracy, as expected.
-- **All adversarial sets**: There is a dramatic drop in both Top-1 and Top-5 accuracy, with PGD being the most severe.
-- **Patch-based attacks**: While less effective than full-image attacks, they still cause a significant drop, especially in Top-5 accuracy.
-
-#### 3. **Lessons Learned**
-- **Adversarial examples are highly transferable** between different architectures, even when the attack is not tailored to the target model.
-- **Localized attacks** (patch-based) are a real threat, as they can fool models even with limited perturbation area.
-
-#### 4. **Mitigation Strategies**
-- **Adversarial training** with a variety of attacks (including patch-based and transferred attacks) can help improve robustness.
-- **Ensemble methods** and input preprocessing may reduce transferability, but are not foolproof.
-- **Detection mechanisms** for adversarial examples are an active area of research.
-
-All results are visualized in `transfer_attack_accuracy.png`.
+1. Use a proper training set for adversarial training
+2. Implement more sophisticated patch attacks
+3. Explore different patch sizes and locations
+4. Investigate transferability of attacks
+5. Implement defense mechanisms
 
 For further details, see the code and visualizations in this repository. 
