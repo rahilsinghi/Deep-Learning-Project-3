@@ -1,0 +1,18 @@
+# Python virtual environment
+venv/
+__pycache__/
+*.pyc
+
+# IDE files
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+__MACOSX/
+
+# Project specific
+TestDataSet/
+AdversarialTestSet*/
+*.zip
+!TestDataSet.zip 
