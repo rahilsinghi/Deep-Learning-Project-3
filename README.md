@@ -124,15 +124,15 @@ For detailed results and analysis, refer to the following files:
 
 ### Accuracy Drop Analysis for Task 2 and Task 3
 
-| Attack   | Top-1 Accuracy | Drop from Baseline | Requirement Met? |
-|----------|----------------|--------------------|------------------|
-| Baseline | 76.0%          | —                  | —                |
-| FGSM     | 26.4%          | 49.6%              | Yes              |
-| PGD      | 2.0%           | 74.0%              | Yes              |
-| I-FGSM   | 1.6%           | 74.4%              | Yes              |
+| Attack   | Top-1 Accuracy | Top-5 Accuracy | Drop from Baseline (Top-1) | Drop from Baseline (Top-5) | Requirement Met? |
+|----------|----------------|----------------|----------------------------|----------------------------|------------------|
+| Baseline | 76.0%          | 94.0%          | —                          | —                          | —                |
+| FGSM     | 21.6%          | 44.6%          | 54.4%                      | 49.4%                      | Yes              |
+| PGD      | 2.0%           | 13.6%          | 74.0%                      | 80.4%                      | Yes              |
+| I-FGSM   | 1.6%           | 12.8%          | 74.4%                      | 81.2%                      | Yes              |
 
-- **Task 2 (FGSM):** The attack achieves a 49.6% drop in Top-1 accuracy, meeting the requirement of at least a 50% drop relative to baseline (just at the threshold).
-- **Task 3 (PGD, I-FGSM):** Both attacks achieve over a 74% drop in Top-1 accuracy, comfortably exceeding the requirement of at least a 70% drop relative to baseline.
+- **Task 2 (FGSM):** With epsilon=0.04, the attack achieves a 54.4% drop in Top-1 accuracy and a 49.4% drop in Top-5 accuracy, both meeting the requirement of at least a 50% drop relative to baseline.
+- **Task 3 (PGD, I-FGSM):** Both attacks achieve over a 74% drop in Top-1 accuracy and over 80% drop in Top-5 accuracy, comfortably exceeding the requirement of at least a 70% drop relative to baseline.
 
 **Conclusion:**
 - The project meets the accuracy drop requirements for both Task 2 and Task 3 as specified in the assignment guidelines.

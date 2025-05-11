@@ -1,0 +1,23 @@
+Adversarial Training Results
+==========================
+
+CLEAN Attack:
+Accuracy: 0.20%
+Average Confidence: 0.2310
+
+FGSM Attack:
+Accuracy: 0.40%
+Average Confidence: 0.1962
+
+FGSM Attack (epsilon=0.04):
+Top-1 Accuracy: 21.6%
+Top-5 Accuracy: 44.6%
+
+PGD Attack:
+Accuracy: 0.40%
+Average Confidence: 0.1959
+
+IFGSM Attack:
+Accuracy: 0.40%
+Average Confidence: 0.1948
+

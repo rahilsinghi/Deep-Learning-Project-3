@@ -36,8 +36,11 @@
   - Configurable epsilon values.
 
 ### Results
-- **Top-1 Accuracy**: 26.40% (reduction of 49.60%)
-- **Top-5 Accuracy**: 50.60% (reduction of 43.60%)
+- **Top-1 Accuracy**: 21.6%
+- **Top-5 Accuracy**: 44.6%
+- **Drop from Baseline (Top-1)**: 54.4%
+- **Drop from Baseline (Top-5)**: 49.4%
+- **Requirement Met**: Yes (Top-1 and Top-5 both meet the 50% drop requirement)
 
 ### Explanation
 - FGSM is a fast, single-step attack that significantly reduces model accuracy.

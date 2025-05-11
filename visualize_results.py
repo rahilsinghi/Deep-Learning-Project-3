@@ -27,8 +27,8 @@ def load_imagenet_labels():
 def plot_accuracy_comparison():
     """Plot accuracy comparison for all attacks"""
     attacks = ['Clean', 'FGSM', 'PGD', 'I-FGSM', 'Patch-PGD']
-    top1_acc = [76.00, 26.40, 2.00, 1.60, 33.40]
-    top5_acc = [94.20, 50.60, 13.60, 10.20, 55.60]
+    top1_acc = [76.00, 21.60, 2.00, 1.60, 33.40]
+    top5_acc = [94.00, 44.60, 13.60, 12.80, 60.00]
     
     x = np.arange(len(attacks))
     width = 0.35
